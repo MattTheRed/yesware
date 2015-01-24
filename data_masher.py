@@ -34,7 +34,7 @@ class NameData(object):
     @property
     def unique_full_names(self):
         pass
-        # Could use drop_duplicates() if I don't need origin data
+        # Could use drop_duplicates() if I don't need original data
         # self._get_unique_count("full")
 
     @property
@@ -72,7 +72,7 @@ class NameData(object):
                 i += 1
             if i > n:
                 break
-        return [", ".join(x) for x in zip(first_names, last_names)]
+        return [", ".join(x) for x in zip(first_names, list(last_names)[::-1])]
 
 def go():
     nd = NameData()

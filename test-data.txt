@@ -1,6 +1,3 @@
-a, a
-b, b
-a, c
 Graham, Mckenna -- ut
     Voluptatem ipsam et at.
 Marvin, Garfield -- non
