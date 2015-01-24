@@ -33,29 +33,32 @@ class NameData(object):
 
     @property
     def unique_full_names(self):
-        self._get_unique_count("full")
+        pass
+        # Could use drop_duplicates() if I don't need origin data
+        # self._get_unique_count("full")
 
     @property
     def unique_first_names(self):
-        self._get_unique_count("full")
+        return self._get_unique_count("first")
 
     @property
     def unique_last_names(self):
-        self._get_unique_count("full")
+        return self._get_unique_count("last")
 
     def _get_unique_count(self, column):
-        pass
+        return len(self.df[column].value_counts())
 
     @property
     def most_common_last_names(self):
-        self._get_most_common("last")
+        return self._get_most_common("last")
 
     @property
     def most_common_first_names(self):
-        self._get_most_common("first")
+        return self._get_most_common("first")
 
 
     def _get_most_common(self, column):
+        return self.df[column].value_counts()[:10]
         pass
 
     @property
@@ -67,21 +70,23 @@ class NameData(object):
 
 
 
-if __name__ == "main":
+if __name__ == "__main__":
+    print "in here"
     # Handle custom file name input
     filename = "test-data.txt"
     nd = NameData(filename)
 
-    # 1
+    print "#1: # of unique first names:"
     # print nd.unique_full_names
-    # print nd.unique_first_names
-    # print nd.unique_last_names
+    print nd.unique_first_names
+    print "#1: # of last first names:"
+    print nd.unique_last_names
 
-    # 2
-    #print nd.unique_first_names
+    print "#2: 10 most common last names"
+    print nd.most_common_last_names
 
-    # 3
-    # print nd.unique_first_names
+    print "#3: 10 most common first names"
+    print nd.most_common_first_names
 
     # 4
     # print nd.modified_names
