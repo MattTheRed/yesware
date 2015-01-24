@@ -1,4 +1,5 @@
 import pandas as pd
+import re
 
 class ParsedDataToCsvFile(file):
     """File wrapper based on http://stackoverflow.com/a/14279543/190597, but using
@@ -11,13 +12,13 @@ class ParsedDataToCsvFile(file):
         return new_chunk
 
     def parse_to_csv(self, line):
-        # PUNT: Do regex checking to verify names. This is sloppy
-        names = line.split(" --")[0].split(", ")
-        if len(names) > 1:
-            new_line = "%s\n" % ",".join(names)
-            return new_line
-        else:
-            return ""
+        name_str = line.split(" --")[0]
+        if re.match("^[,a-zA-Z\s]+$", name_str) is not None:
+            names = name_str.split(", ")
+            if len(names) > 1:
+                new_line = "%s\n" % ",".join(names)
+                return new_line
+        return ""
 
 
 class NameData(object):
