@@ -75,7 +75,7 @@ class NameData(object):
                 i += 1
             if i > n:
                 break
-        return [", ".join(x) for x in zip(first_names, list(last_names)[::-1])]
+        return [", ".join(x) for x in zip(last_names, list(first_names)[::-1])]
 
 if __name__ == "__main__":
     filename = raw_input("What is your filename? (test-data.txt)\n") \
@@ -89,7 +89,7 @@ if __name__ == "__main__":
     print "#1: # of unique first names:"
     print nd.unique_first_names
     print "\n"
-    print "#1: # of last first names:"
+    print "#1: # of unique last names:"
     print nd.unique_last_names
     print "\n"
     print "#2: 10 most common last names"

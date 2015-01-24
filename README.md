@@ -12,6 +12,11 @@ Run the script and follow the prompts
 python data_masher.py
 ```
 
+To run tests:
+```
+nosetests
+```
+
 Imp details and future improvements
 ===================================
 
@@ -23,4 +28,3 @@ file like object to manipulate the input file into the correct format on the fly
 If I knew regexs better, I believe there is way to specify custom deliminators
 with a regex when importing data with pandas
 
-- Write some tests
