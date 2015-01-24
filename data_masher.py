@@ -33,9 +33,7 @@ class NameData(object):
 
     @property
     def unique_full_names(self):
-        pass
-        # Could use drop_duplicates() if I don't need original data
-        # self._get_unique_count("full")
+        return len(self.df.drop_duplicates())
 
     @property
     def unique_first_names(self):
@@ -63,6 +61,8 @@ class NameData(object):
     def modified_names(self, n=None):
         if not n:
             n = 25
+        if n > self.unique_first_names or n > self.unique_last_names:
+            raise Exception("We don't have enough unique names for that!")
         # Using sets for faster lookup times for when n is large
         first_names = set()
         last_names = set()
@@ -76,30 +76,27 @@ class NameData(object):
                 break
         return [", ".join(x) for x in zip(first_names, list(last_names)[::-1])]
 
-def go():
-    nd = NameData("test-data.txt")
-    print nd.modified_names()
-
 if __name__ == "__main__":
-    print "in here"
-    # Handle custom file name input
-    filename = "test-data.txt"
+    filename = raw_input("What is your filename? (test-data.txt)\n") \
+        or "test-data.txt"
+    n = raw_input("How many random names do you want? (25)\n") or 25
     nd = NameData(filename)
 
+    print "#1: # of unique full names:"
+    print nd.unique_full_names
+    print "\n"
     print "#1: # of unique first names:"
-    # print nd.unique_full_names
     print nd.unique_first_names
+    print "\n"
     print "#1: # of last first names:"
     print nd.unique_last_names
-
+    print "\n"
     print "#2: 10 most common last names"
     print nd.most_common_last_names
-
+    print "\n"
     print "#3: 10 most common first names"
     print nd.most_common_first_names
-
+    print "\n"
     print "#4: N modified names"
-    print nd.modified_names()
+    print nd.modified_names(n=int(n))
 
-    # 4
-    # print nd.modified_names
