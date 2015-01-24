@@ -1,14 +1,35 @@
 import pandas as pd
 
+class ParsedDataToCsvFile(file):
+    """File wrapper based on http://stackoverflow.com/a/14279543/190597, but using
+    read() instead of next() since pandas filereader imp changed"""
+    def read(self, *args):
+        lines = super(ParsedDataToCsvFile, self).read(*args)
+        new_chunk = ""
+        for line in lines.split("\n"):
+            new_chunk+= self.parse_to_csv(line)
+        return new_chunk
+
+    def parse_to_csv(self, line):
+        # PUNT: Do regex checking to verify names. This is sloppy
+        names = line.split(" --")[0].split(",")
+        if len(names) > 1:
+            new_line = "%s\n" % ",".join(names)
+            return new_line
+        else:
+            return ""
+
+
 class NameData(object):
     """Imports name data into a pandas dataframe and exposes
     methods to aggregate data"""
-    def __init__(self, filename):
-        pass
+    def __init__(self, filename="test-data.txt"):
+        self.import_data(filename)
 
-    def import_data(self):
+    def import_data(self, filename):
         """read data from txt file into a dataframe object"""
-        # Regex to match format
+        self.df = pd.read_csv(ParsedDataToCsvFile(filename, "r"), \
+            header=None, names=["last", "first"])
 
     @property
     def unique_full_names(self):
@@ -39,6 +60,7 @@ class NameData(object):
 
     @property
     def modified_names(self, n=25):
+        pass
         # slice off the top n elements
         # copy new data into another temp df object
         # to check against
