@@ -23,7 +23,7 @@ class ParsedDataToCsvFile(file):
 class NameData(object):
     """Imports name data into a pandas dataframe and exposes
     methods to aggregate data"""
-    def __init__(self, filename="test-data.txt"):
+    def __init__(self, filename):
         self.import_data(filename)
 
     def import_data(self, filename):
@@ -60,7 +60,9 @@ class NameData(object):
     def _get_most_common(self, column):
         return self.df[column].value_counts()[:10]
 
-    def modified_names(self, n=25):
+    def modified_names(self, n=None):
+        if not n:
+            n = 25
         # Using sets for faster lookup times for when n is large
         first_names = set()
         last_names = set()
@@ -75,7 +77,7 @@ class NameData(object):
         return [", ".join(x) for x in zip(first_names, list(last_names)[::-1])]
 
 def go():
-    nd = NameData()
+    nd = NameData("test-data.txt")
     print nd.modified_names()
 
 if __name__ == "__main__":
@@ -95,6 +97,9 @@ if __name__ == "__main__":
 
     print "#3: 10 most common first names"
     print nd.most_common_first_names
+
+    print "#4: N modified names"
+    print nd.modified_names()
 
     # 4
     # print nd.modified_names
