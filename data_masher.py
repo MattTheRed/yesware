@@ -12,7 +12,7 @@ class ParsedDataToCsvFile(file):
 
     def parse_to_csv(self, line):
         # PUNT: Do regex checking to verify names. This is sloppy
-        names = line.split(" --")[0].split(",")
+        names = line.split(" --")[0].split(", ")
         if len(names) > 1:
             new_line = "%s\n" % ",".join(names)
             return new_line
@@ -59,16 +59,24 @@ class NameData(object):
 
     def _get_most_common(self, column):
         return self.df[column].value_counts()[:10]
-        pass
 
-    @property
     def modified_names(self, n=25):
-        pass
-        # slice off the top n elements
-        # copy new data into another temp df object
-        # to check against
+        # Using sets for faster lookup times for when n is large
+        first_names = set()
+        last_names = set()
+        i = 1
+        for pk, row in self.df.iterrows():
+            if not row["first"] in first_names and not row["last"] in last_names:
+                first_names.add(row["first"])
+                last_names.add(row["last"])
+                i += 1
+            if i > n:
+                break
+        return [", ".join(x) for x in zip(first_names, last_names)]
 
-
+def go():
+    nd = NameData()
+    print nd.modified_names()
 
 if __name__ == "__main__":
     print "in here"
